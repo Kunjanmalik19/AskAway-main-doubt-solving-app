@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <a href="http:localhost:3000/dashboard" style="text-decoration: none;"><div class="logo">AskAway</div></a>
+        <div>
+            <button class="nav-button"><%= user.name %></button>
+            <button class="nav-button"><%= user.email %></button>
+            <button class="nav-button" id="askDoubtBtn">Ask another Doubt</button>
+            <button class="nav-button" id="bookSessionBtn"><a style="text-decoration: none; color: white;">Book a Session</a></button>
+            <button class="nav-button" id="mydoubtsbtn">My Doubts</button>
+            <button class="nav-button" id="BookedSessionBtn"> My Sessions</button>
+            <a href="http://localhost:3000/login" class="nav-button">LogÂ Out</a>
+            <button class="nav-button" id="AsktoAiBtn">Ask to AI</button>
+        </div>
+
+    </header>
+
+    <section class="temp"></section>
+
+    <section class="bookedsessions">
+        <div class="container">
+            <h1>Booked Sessions</h1>
+            <% if (bookasessions.length > 0) { %>
+                <ul>
+                    <% bookasessions.forEach(session => { %>
+                        <li>
+                            <strong>Subject:</strong> <%= session.subject %> <br>
+                            <strong>Time:</strong> <%= session.preferred_time.toLocaleString() %> <br>
+                            <strong>Message:</strong> <%= session.message %>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No booked sessions found.</p>
+            <% } %>
+        </div>
+    </section>
+
+    <section class="mydoubts">
+        <div class="container">
+            <h1>Your Doubts:</h1>
+        <% if (doubts.length > 0) { %>
+            <% doubts.forEach(doubt => { %>
+                <p><%= doubt.doubtText %></p>
+                <% if (doubt.imagePath) { %>
+                    <img src="/<%= doubt.imagePath %>" width="200"><br>
+                <% } %>
+                <hr>
+            <% }) %>
+        <% } else { %>
+            <p>No doubts yet.</p>
+        <% } %>
+        </div>
+        
+    </section>
+
+    <section class="newdoubt">
+        <div class="container"><h3>Submit a New Doubt:</h3>
+            <form action="/submit-doubt" method="POST" enctype="multipart/form-data">
+                <textarea name="doubt" placeholder="Enter your doubt"></textarea><br>
+                <input type="file" name="image"><br>
+                <button type="submit">Submit Doubt</button>
+            </form></div>
+    </section>
+
+
+<section class="bookasession">
+    <div class="container">
+        <h1>Book a Doubt Resolution Call</h1>
+        <form id="bookingForm" action="/submit-bookasession" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Contact Number:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject/Topic:</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+
+            <div class="form-group">
+                <label for="preferred_time">Preferred Time:</label>
+                <input type="datetime-local" id="preferred_time" name="preferred_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Additional Queries:</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+
+            <button type="submit">Book Call</button>
+        </form>
+    </div>
+</section>
+
+<section class="asktoai"><div class="container">
+
+    <div class="chat-container">
+        <h2>AI Assistant</h2>
+        <div class="chat-history" id="chatHistory"></div>
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Ask your doubt here...">
+            <button class="nav-button" id="sendChat">Send</button>
+        </div>
+    </div>
+</div></section>
+
+    <footer>
+        <div class="footer">
+            <p>&copy; 2024 AskAway. All rights reserved.</p>
+            <button class="nav-button" id="footerAboutBtn">About Us</button>
+            <button class="nav-button" id="footerContactBtn">Contact Us</button>
+        </div>
+    </footer>
+
+    <script src="/js/scripts.js"></script>
+
+    <style>
+
+header {
+    background-color: #1a1a1a;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --bg-color: #1e232b;
+    --sec-color: #222831;
+    --block-color: #29303b;
+    --theme-color: #FF5722;
+    --text-color: #EEEEEE;
+}
+
+html,
+body {
+    font-family: poppins;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.temp, .mydoubts, .newdoubt {
+    flex-grow: 1; /* This ensures that the main content grows to fill available space */
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #f36812;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Header navigation buttons */
+.nav-button {
+    padding: 0.438rem 1rem;
+    margin: 0.313rem;
+    background-color: var(--theme-color);
+    box-shadow: 0 0.05rem 0.625rem #ff550038;
+    border: none;
+    font-size: 0.938rem;
+    border-radius: 0.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: #f39c12;
+    color: #1a1a1a;
+}
+
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    padding: 0.625rem;
+    margin: 1rem 0.625rem;
+    background-color: var(--sec-color);
+    border-radius: 0.938rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    flex-basis: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-color);
+    text-align: center;
+    padding: 0% 0% 2% 0%;
+    text-align: center;
+    margin: 0 1rem;
+    margin-bottom: -1rem;
+    transition: all 0.3s ease;
+}
+
+.footer button {
+    margin: 0 1rem;
+    background: none;
+    padding: 0.2rem 0.625rem;
+    border-radius: 1rem;
+    border: none;
+    border-width: 1px;
+    color: var(--theme-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 60rem) {
+    .footer p {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .footer button {
+        font-size: 0.8rem;
+    }
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #f39c12;
+    font-size: 32px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f39c12;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    font-size: 16px;
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+.container {
+    background-color: #333;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 80vh;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.container p {
+    color: #f0f0f0;
+}
+
+.mydoubts {
+    height: auto;
+    display: none;
+    justify-content: center;
+}
+
+.temp {
+    height: auto;
+    padding: 20px;
+}
+
+.newdoubt {
+    display: none;
+    justify-content: center;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #555;
+    margin: 20px 0;
+}
+
+button[type="submit"] {
+    background-color: #f39c12;
+    color: #1a1a1a;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #d35400;
+}
+
+.bookedsessions{
+    display:none;
+    height:82vh;
+}
+.bookasession{
+    display:none;
+}
+
+.asktoai{
+    display: none;
+    margin:30px;
+    height:82vh;
+}
+
+
+        </style>
+
+        <script> 
+                // This is for the basic after-login-navigation buttons adjustments
+                var askDoubtBtn = document.getElementById("askDoubtBtn");
+                askDoubtBtn.onclick = function(){
+                document.querySelector(".newdoubt").style.display = "flex";  // Use querySelector for single element
+                document.querySelector(".temp").style.display = "none";  
+                document.querySelector(".mydoubts").style.display = "none";    // Hide temp section
+                document.querySelector(".bookasession").style.display="none";
+                document.querySelector(".bookedsessions").style.display="none";
+                document.querySelector(".asktoai").style.display="none";
+
+            }
+            
+            var myDoubtsBtn = document.getElementById("mydoubtsbtn");
+            myDoubtsBtn.onclick = function(){
+                document.querySelector(".mydoubts").style.display = "flex";  // Show mydoubts section
+                document.querySelector(".temp").style.display = "none"; 
+                document.querySelector(".newdoubt").style.display = "none";     // Hide temp section
+                document.querySelector(".bookasession").style.display="none";
+                document.querySelector(".bookedsessions").style.display="none";
+                document.querySelector(".asktoai").style.display="none";
+            }            
+            
+            var bookSessionBtn = document.getElementById("bookSessionBtn");
+            bookSessionBtn.onclick = function() {
+                document.querySelector(".mydoubts").style.display = "none";
+                document.querySelector(".temp").style.display = "none";
+                document.querySelector(".newdoubt").style.display = "none";
+                document.querySelector(".bookasession").style.display = "flex";
+                document.querySelector(".bookedsessions").style.display="none";
+                document.querySelector(".asktoai").style.display="none";
+
+        }
+
+        var BookedSessionBtn = document.getElementById("BookedSessionBtn");
+            BookedSessionBtn.onclick = function() {
+                document.querySelector(".mydoubts").style.display = "none";
+                document.querySelector(".temp").style.display = "none";
+                document.querySelector(".newdoubt").style.display = "none";
+                document.querySelector(".bookasession").style.display = "none";
+                document.querySelector(".bookedsessions").style.display="flex";
+                document.querySelector(".asktoai").style.display="none";
+            }
+
+        var AsktoAiBtn=document.getElementById("AsktoAiBtn");
+                AsktoAiBtn.onclick=function(){
+                document.querySelector(".mydoubts").style.display = "none";
+                document.querySelector(".temp").style.display = "none";
+                document.querySelector(".newdoubt").style.display = "none";
+                document.querySelector(".bookasession").style.display = "none";
+                document.querySelector(".bookedsessions").style.display="none";
+                document.querySelector(".asktoai").style.display="flex";
+
+        }
+
+
+        //This code contains the ask chat bot for the ask to ai feature
+
+        document.addEventListener('DOMContentLoaded', () => {
+                // Initialize AI
+                const ai = new AIChat();
+            
+        // Chat elements
+        const chatHistory = document.getElementById('chatHistory');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendChat');
+
+        // Modal elements
+        const modal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const closeBtn = document.querySelector('.close');
+        const loginOptions = document.querySelectorAll('.login-option');
+
+        // Chat functionality
+        function appendMessage(content, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+        messageDiv.textContent = content;
+        chatHistory.appendChild(messageDiv);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+
+        function handleChat() {
+        const message = chatInput.value.trim();
+        if (message) {
+            appendMessage(message, true);
+            chatInput.value = '';
+
+            // Simulate AI thinking
+            setTimeout(() => {
+                const response = ai.getResponse(message);
+                appendMessage(response, false);
+            }, 500);
+        }
+    }
+
+    // Event listeners
+    sendButton.addEventListener('click', handleChat);
+    
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            handleChat();
+        }
+    });
+
+    // Form submission
+    const doubtForm = document.getElementById('doubtForm');
+    doubtForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const doubt = document.getElementById('doubt').value;
+        const image = document.getElementById('image').files[0];
+        
+        // Here you would typically send the doubt and image to your server
+        console.log('Doubt submitted:', doubt);
+        if (image) {
+            console.log('Image attached:', image.name);
+        }
+        
+        // Clear form
+        doubtForm.reset();
+        
+        // Show confirmation
+        alert('Your doubt has been submitted successfully!');
+    });
+
+    // Modal functionality
+    loginBtn.addEventListener('click', () => {
+        modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    loginOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            alert(`Logging in as ${option.textContent}`);
+            modal.style.display = 'none';
+        });
+    });
+});
+
+
+//Ai chat code
+class AIChat {
+    constructor() {
+        this.responses = {
+            greeting: [
+                "Hello! How can I help you with your programming doubts today?",
+                "Hi there! I'm here to assist you with your coding questions.",
+                "Welcome to DoubtNLearn! What can I help you with?"
+            ],
+            javascript: [
+                "JavaScript is a versatile programming language. What specific aspect would you like to learn about?",
+                "In JavaScript, you can create interactive web applications. Would you like to know more about any particular feature?",
+                "JavaScript is essential for web development. Are you interested in variables, functions, or DOM manipulation?"
+            ],
+            python: [
+                "Python is known for its simplicity and readability. What aspect would you like to explore?",
+                "Python is great for beginners and experts alike. Would you like to learn about its data structures?",
+                "Python has many applications from web development to AI. What area interests you?"
+            ],
+            java: [
+                "Java is a popular object-oriented programming language. What would you like to know?",
+                "Java is used in many enterprise applications. Are you interested in its OOP concepts?",
+                "Java has strong typing and compilation. What specific topic would you like to discuss?"
+            ],
+            database: [
+                "Databases are essential for storing and managing data. Which database system interests you?",
+                "SQL is commonly used for relational databases. Would you like to learn about queries?",
+                "NoSQL databases like MongoDB are popular for flexible data storage. What would you like to know?"
+            ],
+            default: [
+                "I'm here to help! Could you please provide more details about your question?",
+                "That's an interesting question. Could you elaborate a bit more?",
+                "I'd be happy to help. Can you give me more specific information?"
+            ]
+        };
+    }
+
+    getResponse(message) {
+        const lowercaseMsg = message.toLowerCase();
+        
+        // Check for greetings
+        if (lowercaseMsg.match(/\b(hi|hello|hey)\b/)) {
+            return this.getRandomResponse('greeting');
+        }
+        
+        // Check for programming languages
+        if (lowercaseMsg.includes('javascript') || lowercaseMsg.includes('js')) {
+            return this.getRandomResponse('javascript');
+        }
+        if (lowercaseMsg.includes('python')) {
+            return this.getRandomResponse('python');
+        }
+        if (lowercaseMsg.includes('java')) {
+            return this.getRandomResponse('java');
+        }
+        if (lowercaseMsg.match(/\b(sql|database|mongodb)\b/)) {
+            return this.getRandomResponse('database');
+        }
+        
+        return this.getRandomResponse('default');
+    }
+
+    getRandomResponse(category) {
+        const responses = this.responses[category];
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+}
+
+// Export the AI class
+window.AIChat = AIChat;
+
+            
+    </script>
+
+</body>
+</html>

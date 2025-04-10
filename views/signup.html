@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Poppins;
+    /* scroll-padding-top: 7rem; */
+}
+
+/* yaha pe colors define kare hai */
+:root {
+    --bg-color: #1e232b;
+    --sec-color: #222831;
+    --block-color: #29303b;
+    --theme-color: #FF5722;
+    --text-color: #EEEEEE;
+}
+
+html,
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* yaha se header h pura */
+header {
+    /* position: sticky; */
+    top: 0.1rem;
+    z-index: 1;
+}
+
+nav {
+    padding: 0.625rem;
+    transition: all 0.3s ease;
+}
+
+.nav-bar {
+    background-color: var(--sec-color);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.938rem;
+    padding: 0.625rem;
+    box-shadow: 0 0 0.625rem #00000099;
+    position: relative;
+}
+
+.nav-head {
+    text-decoration: none;
+    color: var(--theme-color);
+    font-size: 1.875rem;
+    font-weight: 600;
+    padding: 0 0.938rem;
+    text-shadow: 0 0.25rem 1.25rem #0000004d;
+    transition: all 0.3s ease;
+}
+
+.nav-head:hover {
+    color: var(--theme-color);
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin-right: 0.313rem;
+    transition: all 0.3s ease;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 0 0.938rem;
+    font-size: 0.938rem;
+    text-shadow: 0 0.25rem 1.25rem #0000004d;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--theme-color);
+}
+
+.login-button {
+    padding: 0.438rem 1rem;
+    margin: 0.313rem;
+    background-color: var(--theme-color);
+    box-shadow: 0 0.05rem 0.625rem #ff550038;
+    border: none;
+    font-size: 0.938rem;
+    border-radius: 0.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: var(--theme-color);
+}
+
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown-button {
+    font-weight: 1000;
+    display: none;
+    background: none;
+    border: none;
+    color: var(--theme-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: absolute;
+    left: 1rem;
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+}
+
+.dropdown-content {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 4.163rem;
+    left: 0.2rem;
+    background-color: #171c24e7;
+    border-radius: 0.625rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.dropdown-content a {
+    background-color: var(--block-color);
+    color: var(--text-color);
+    padding: 0.625rem 2.5rem;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--theme-color);
+}
+
+@media (max-width: 48rem) {
+    .nav-head {
+        margin-left: 1.438rem;
+        text-align: center;
+        font-size: 1.3rem;
+    }
+
+    .login-button {
+        padding: 0.2rem 0.438rem;
+        margin-left: auto;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .dropdown-menu {
+        display: flex;
+        align-items: center;
+        z-index: 1;
+    }
+
+    .dropdown-button {
+        display: block;
+    }
+
+    .dropdown-menu:hover .dropdown-content {
+        display: flex;
+    }
+}
+
+
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    padding: 0.625rem;
+    margin: 1rem 0.625rem;
+    background-color: var(--sec-color);
+    border-radius: 0.938rem;
+}
+
+.footer p {
+    flex-basis: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-color);
+    text-align: center;
+    padding: 0% 0% 2% 0%;
+    text-align: center;
+    margin: 0 1rem;
+    margin-bottom: -1rem;
+    transition: all 0.3s ease;
+}
+
+.footer button {
+    margin: 0 1rem;
+    background: none;
+    padding: 0.2rem 0.625rem;
+    border-radius: 1rem;
+    border: none;
+    border-width: 1px;
+    color: var(--theme-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 60rem) {
+    .footer p {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .footer button {
+        font-size: 0.8rem;
+    }
+}
+
+.form-group label {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.form-group input {
+    padding: 8px;
+    border: 2px solid var(--theme-color);
+    border-radius: 10px;
+    font-size: 1.1rem;
+    background-color: var(--block-color);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #ff3300;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+    outline: none;
+}
+
+.buttons button {
+    margin-top: 10px;
+    height: 40px;
+    width: 100px;
+    padding: 1px;
+    background-color: var(--theme-color);
+    border-radius: 12px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    justify-content: center;
+    align-self: center;
+    text-align: center;
+    
+}
+
+.buttons button:hover {
+    background-color: #b73737;
+    transform: translateY(-2px);
+}
+
+
+.singup {
+    font-size: 1rem;
+    color: var(--theme-color);
+}
+
+
+.singup:hover {
+    color: #ff3300;
+}
+
+.toggle-link {
+    text-align: center;
+    margin-top: 10px;
+    color: #ff5500;
+    cursor: pointer;
+}
+
+.form-group#describeDomainGroup {
+    display: none;
+}
+
+
+.container {
+    background-color: var(--sec-color);
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 100px auto;
+}
+
+/* Styling for the form heading */
+.container h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--theme-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Styling each label */
+.form-group label {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+    display: block;
+    margin-top: 15px;
+}
+
+/* Styling each input field */
+.form-group input, 
+.form-group select {
+    padding: 10px;
+    border: 2px solid var(--theme-color);
+    border-radius: 10px;
+    font-size: 1.1rem;
+    background-color: var(--block-color);
+    color: var(--text-color);
+    width: 100%;
+    margin-top: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Input fields on focus */
+.form-group input:focus, 
+.form-group select:focus {
+    border-color: #ff3300;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+    outline: none;
+}
+
+/* Styling for the signup button */
+button[type="submit"] {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--theme-color);
+    border: none;
+    color: var(--text-color);
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Button hover effect */
+button[type="submit"]:hover {
+    background-color: #b73737;
+    transform: translateY(-2px);
+}
+    </style>
+
+    <header>
+        <nav class="nav">
+            <div class="nav-bar">
+                <a class="nav-head" href="http://127.0.0.1:3002/views/home.html">AskAway</a>
+                <ul class="nav-links">
+                    <li><a href="http://127.0.0.1:3002/views/roadmap.html">Roadmap</a></li>
+                    <li><a href="http://localhost:3000/login">Ask a Doubt</a></li>
+                    <li><a href="http://localhost:3000/login">Book a Session</a></li>
+                </ul>
+                <button class="login-button">Login</button>
+                <div class="dropdown-menu">
+                    <button class="dropdown-button">☰</button>
+                    <div class="dropdown-content">
+                        <a href="roadmap.html">Roadmap</a>
+                        <a href="askdoubt.html">Ask a Doubt</a>
+                        <a href="bookasession.html">Book a Session</a>
+                    </div>
+                </div>
+                <script>
+                    document.querySelector('.dropdown-button').addEventListener('click', function () {
+                        const dropdownContent = document.querySelector('.dropdown-content');
+                        dropdownContent.style.display = (dropdownContent.style.display === 'flex') ? 'none' : 'flex';
+                    });
+                </script>
+
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h2>Sign Up</h2>
+    <form action="/signup" method="POST">
+        <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="domain">Domain (e.g., Backend, Frontend, DSA):</label>
+        <input type="text" id="domain" name="domain" required><br>
+
+        <label for="accountType">Account Type:</label>
+        <select name="accountType" id="accountType">
+            <option value="student">Student</option>
+            <option value="mentor">Mentor</option>
+            <option value="faculty">Faculty</option>
+        </select><br>
+    </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+</div>
+<footer>
+    <div class="footer">
+        <p>&copy; 2024 AskAway. All rights reserved.</p>
+        <button class="nav-button" id="footerAboutBtn">About Us</button>
+        <button class="nav-button" id="footerContactBtn">Contact Us</button>
+    </div>
+</footer>
+
+    
+</body>
+</html>
