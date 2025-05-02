@@ -1,2 +1,2 @@
 # AskAway
-# A Online Doubt Solving Platform
+A Online Doubt Solving Platform
